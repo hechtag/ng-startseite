@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MemoryListModule } from './memory-list/memory-list.module';
 
 @NgModule({
   declarations: [
@@ -11,8 +12,9 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     NgbModule,
-    AppRoutingModule
+    MemoryListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
