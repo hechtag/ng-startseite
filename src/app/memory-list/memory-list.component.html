@@ -1,1 +1,12 @@
-<p>memory-list works!</p>
+<div class="input-group mt-2 mb-2">
+
+  <input type="text" class="form-control" placeholder="Was willst du nicht vergessen?" [(ngModel)]="memoryString"
+    (keyup.enter)="addMemory()">
+  <div class="input-group-append">
+    <button class="btn btn-primary" type="button" (click)="addMemory()">Button</button>
+  </div>
+</div>
+
+<ul class="list-group" *ngFor="let memory of memoryList$ | async">
+  <li class="list-group-item">{{memory}}</li>
+</ul>
