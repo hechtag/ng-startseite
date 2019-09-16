@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MemoryService } from './services/memory.service';
 import { Observable } from 'rxjs';
+import { Memory } from './shared/memory';
 
 @Component({
   selector: 'app-memory-list',
@@ -10,8 +11,8 @@ import { Observable } from 'rxjs';
 export class MemoryListComponent implements OnInit {
 
   public memoryString: string;
-  public memoryList: string[] = [];
-  memoryList$: Observable<string[]>;
+  public memoryList: Memory[] = [];
+  memoryList$: Observable<Memory[]>;
   constructor(private memoryService: MemoryService) { }
   ngOnInit() {
     this.memoryList$ = this.memoryService.getMemories();

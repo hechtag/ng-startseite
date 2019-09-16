@@ -1,17 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Memory } from '../shared/memory';
 
 @Injectable()
 export class MemoryService {
+  private localStorageKey = 'memories';
+  private memories$: BehaviorSubject<Memory[]>;
 
-  private memories: string[] = ['asd'];
   addMemory(memoryString: string) {
-    this.memories.push(memoryString);
+    const mems = this.memories$.value;
+    mems.unshift(new Memory(memoryString));
+    this.setStorage(mems);
+    this.memories$.next(this.getFromStorage());
   }
 
-  getMemories(): Observable<string[]> {
-    return of(this.memories);
+  getMemories(): Observable<Memory[]> {
+    return this.memories$;
   }
 
-  constructor() { }
+  private getFromStorage(): Memory[] {
+    const mems = localStorage.getItem(this.localStorageKey);
+    return JSON.parse(mems);
+  }
+
+  private setStorage(mems: Memory[]) {
+    localStorage.setItem(this.localStorageKey, JSON.stringify(mems));
+  }
+
+  constructor() {
+    this.memories$ = new BehaviorSubject(this.getFromStorage());
+  }
 }
