@@ -7,6 +7,10 @@ export class MemoryService {
   private localStorageKey = 'memories';
   private memories$: BehaviorSubject<Memory[]>;
 
+  constructor() {
+    this.memories$ = new BehaviorSubject(this.getFromStorage());
+  }
+
   addMemory(memoryString: string) {
     const mems = this.memories$.value;
     mems.unshift(new Memory(memoryString));
@@ -25,9 +29,5 @@ export class MemoryService {
 
   private setStorage(mems: Memory[]) {
     localStorage.setItem(this.localStorageKey, JSON.stringify(mems));
-  }
-
-  constructor() {
-    this.memories$ = new BehaviorSubject(this.getFromStorage());
   }
 }
