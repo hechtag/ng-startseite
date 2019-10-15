@@ -1,0 +1,9 @@
+<div class="card mt-1 mb-1">
+    <div class="card-body">
+        <h5 class="card-title">{{card?.title}}</h5>
+        <p class="card-text" *ngIf="card?.text">
+            {{card?.text}}
+        </p>
+        <a href="{{card?.url}}" class="btn btn-primary">Go</a>
+    </div>
+</div>
