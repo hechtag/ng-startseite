@@ -5,7 +5,8 @@ import { CardLinkComponent } from './card-link/card-link.component';
 
 
 const routes: Routes = [
-  { path: '', component: MemoryListComponent },
+  { path: '', redirectTo: '/memories', pathMatch: 'full' },
+  { path: 'memories', component: MemoryListComponent },
   { path: 'cards', component: CardLinkComponent },
 ];
 
