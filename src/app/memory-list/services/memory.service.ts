@@ -23,8 +23,9 @@ export class MemoryService {
   }
 
   private getFromStorage(): Memory[] {
-    const mems = localStorage.getItem(this.localStorageKey);
-    return JSON.parse(mems);
+    const memString = localStorage.getItem(this.localStorageKey);
+    const mems = JSON.parse(memString) as Memory[];
+    return !!mems ? mems : [];
   }
 
   private setStorage(mems: Memory[]) {

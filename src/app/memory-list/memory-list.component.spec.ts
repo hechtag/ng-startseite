@@ -1,16 +1,29 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { MemoryListComponent } from "./memory-list.component";
+import { MemoryService } from "./services/memory.service";
+import { of } from "rxjs";
+import { FormsModule } from "@angular/forms";
 
-import { MemoryListComponent } from './memory-list.component';
-
-describe('MemoryListComponent', () => {
+describe("MemoryListComponent", () => {
   let component: MemoryListComponent;
   let fixture: ComponentFixture<MemoryListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MemoryListComponent ]
-    })
-    .compileComponents();
+      declarations: [MemoryListComponent],
+      imports: [FormsModule],
+      providers: [
+        {
+          provide: MemoryService,
+          useValue: {
+            getMemories: () => {
+              return of([]);
+            },
+            addMemory: str => { }
+          }
+        }
+      ]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +32,7 @@ describe('MemoryListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
