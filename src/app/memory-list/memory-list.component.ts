@@ -40,7 +40,6 @@ export class MemoryListComponent implements OnInit {
   }
 
   hardReset(content) {
-    // TODO überprüfen
     this.modalService.open(content).subscribe(result => {
       if (result) {
         this.memoryService.hardReset();

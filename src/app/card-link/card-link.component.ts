@@ -3,6 +3,7 @@ import { Card } from './shared/card';
 import { CardLinkService } from './services/card-link.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { ModalService } from '../core/modal.service';
 
 @Component({
   selector: 'app-card-link',
@@ -15,6 +16,7 @@ export class CardLinkComponent implements OnInit {
   constructor(
     private readonly service: CardLinkService,
     private readonly router: Router,
+    private modalService: ModalService,
   ) { }
   ngOnInit() {
     this.cards$ = this.service.getCards();
@@ -28,4 +30,11 @@ export class CardLinkComponent implements OnInit {
     this.router.navigate(['cards', 'edit', card.id]);
   }
 
+  handleDelete(content,card: Card) {
+    this.modalService.open(content).subscribe(result => {
+      if (result) {
+        this.service.delete(card.id);
+      }
+    });
+  }
 }

@@ -1,10 +1,29 @@
 <div class="row mt-2">
   <div class="col-sm-6 col-md-4 col-xl-3" *ngFor="let card of cards$ | async">
-    <app-card [card]="card" (edit)="handleEdit(card)"></app-card>
+    <app-card [card]="card" (edit)="handleEdit(card)" (delete)="handleDelete(content,card)"></app-card>
   </div>
 </div>
-<div class="btn-group" role="group" aria-label="toolbar-card">
+<div class="btn-group mt-2" role="group" aria-label="toolbar-card">
   <button type="button" class="btn btn-secondary" (click)="addCard()">Hinzufügen</button>
   <!-- <button type="button" class="btn btn-secondary">Middle</button>
   <button type="button" class="btn btn-secondary">Right</button> -->
 </div>
+
+
+
+<!-- das ist der content des Modals -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Löschen</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Soll wirklich Wech?!
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close(true)">Jop</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close(false)">Nö, lieber doch nicht</button>
+  </div>
+</ng-template>

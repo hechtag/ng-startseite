@@ -14,5 +14,9 @@
   <label for="text">Text</label>
   <input type="text" class="form-control" id="text" [(ngModel)]="card.text" placeholder="Text">
 </div>
-<button type="button" *ngIf="!isEdit" class="btn btn-primary" (click)="add()">Hinzufügen</button>
-<button type="button" *ngIf="isEdit" class="btn btn-primary" (click)="edit()">Bearbeiten</button>
+
+<div class="btn-group" role="group" aria-label="toolbar-card">
+  <button type="button" *ngIf="!isEdit" class="btn btn-primary" (click)="add()">Hinzufügen</button>
+  <button type="button" *ngIf="isEdit" class="btn btn-primary" (click)="edit()">Bearbeiten</button>
+  <button type="button" class="btn btn-secondary" (click)="cancel()">Abbrechen</button>
+</div>

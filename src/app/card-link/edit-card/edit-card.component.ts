@@ -42,4 +42,7 @@ export class EditCardComponent implements OnInit {
     this.service.editCard(this.card);
     this.router.navigate(['./']);
   }
+  cancel() {
+    this.router.navigate(['./']);
+  }
 }
