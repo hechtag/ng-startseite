@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { MemoryService } from './services/memory.service';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Memory } from './shared/memory';
 import { ModalService } from '../core/modal.service';
 
@@ -10,12 +10,18 @@ import { ModalService } from '../core/modal.service';
   templateUrl: './memory-list.component.html',
   styleUrls: ['./memory-list.component.scss']
 })
-export class MemoryListComponent implements OnInit {
+export class MemoryListComponent implements OnInit, AfterViewInit {
 
   public memoryString: string;
   public memoryList: Memory[] = [];
   public toDoMemoryList$: Observable<Memory[]>;
   public doneMemoryList$: Observable<Memory[]>;
+
+  @ViewChild('memoryBar') memoryBar: ElementRef;
+  ngAfterViewInit() {
+    this.memoryBar.nativeElement.focus();
+  }
+
   constructor(
     private memoryService: MemoryService,
     private modalService: ModalService,

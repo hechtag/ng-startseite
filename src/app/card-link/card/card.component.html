@@ -4,10 +4,10 @@
     <p class="card-text" *ngIf="card?.text">
       {{card?.text}}
     </p>
-    <div class="btn-group" role="group" aria-label="toolbar-card">
-      <a href="{{card?.url}}" class="btn btn-primary">Go</a>
-      <button type="button" (click)="editEvent(event)" class="btn btn-secondary">Bearbeiten</button>
-      <button type="button" (click)="deleteEvent(event)" class="btn btn-secondary">Löschen</button>
+    <a href="{{card?.url}}" class="btn btn-primary btn-block">LINK!</a>
+    <div class="btn-group mt-1" role="group" aria-label="toolbar-card">
+      <button type="button" (click)="editEvent(event)" class="btn btn-secondary btn-sm">Bearbeiten</button>
+      <button type="button" (click)="deleteEvent(event)" class="btn btn-secondary btn-sm">Löschen</button>
     </div>
   </div>
 </div>

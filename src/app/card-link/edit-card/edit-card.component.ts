@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tap, switchMap, delay } from 'rxjs/operators';
 import { CardLinkService } from '../services/card-link.service';
@@ -10,10 +10,14 @@ import { Card } from '../shared/card';
   templateUrl: './edit-card.component.html',
   styleUrls: ['./edit-card.component.scss']
 })
-export class EditCardComponent implements OnInit {
+export class EditCardComponent implements OnInit, AfterViewInit {
   isEdit = false;
   card: Card = { text: '', title: '', url: '', id: '' };
 
+  @ViewChild('firstInput') firstInput: ElementRef;
+  ngAfterViewInit() {
+    this.firstInput.nativeElement.focus();
+  }
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly service: CardLinkService,

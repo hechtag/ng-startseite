@@ -10,7 +10,7 @@ import { MemoryService } from './services/memory.service';
   declarations: [MemoryListComponent],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [MemoryService],
   exports: [MemoryListComponent]

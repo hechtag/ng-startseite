@@ -1,5 +1,5 @@
 <div class="input-group mt-2 mb-2">
-  <input type="text" class="form-control" placeholder="Was willst du dir merken?" [(ngModel)]="memoryString"
+  <input type="text" class="form-control" #memoryBar placeholder="Was willst du dir merken?" [(ngModel)]="memoryString"
     (keyup.enter)="addMemory()">
   <div class="input-group-append">
     <button class="btn btn-primary" type="button" (click)="addMemory()">hinzufügen</button>
