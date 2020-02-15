@@ -1,12 +1,41 @@
 <div class="input-group mt-2 mb-2">
-
   <input type="text" class="form-control" placeholder="Was willst du dir merken?" [(ngModel)]="memoryString"
     (keyup.enter)="addMemory()">
   <div class="input-group-append">
-    <button class="btn btn-primary" type="button" (click)="addMemory()">Button</button>
+    <button class="btn btn-primary" type="button" (click)="addMemory()">hinzufügen</button>
   </div>
 </div>
+<div style="min-height:20rem">
+  <h3 *ngIf="(toDoMemoryList$ | async).length > 0">Was ist dran?</h3>
 
-<ul class="list-group" *ngFor="let memory of memoryList$ | async">
-  <li class="list-group-item">{{memory.text}}</li>
+  <ul class="list-group" *ngFor="let memory of toDoMemoryList$ | async">
+    <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.text}}
+      <button class="btn btn-primary mt-2" type="button" (click)="isDone(memory.id)">erledigt!</button>
+    </li>
+  </ul>
+</div>
+<button class="btn btn-primary mt-2 mb-2" type="button" (click)="hardReset(content)">Alle löschen</button>
+
+<h3 *ngIf="(doneMemoryList$ | async).length > 0">Das ist alles schon fertig!</h3>
+<ul class="list-group mt-2" *ngFor="let memory of doneMemoryList$ | async">
+  <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.text}}
+  </li>
 </ul>
+
+
+<!-- das ist der content des Modals -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Löschen</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Soll wirklich alles Wech?!
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close(true)">Jop</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.close(false)">Nö, lieber doch nicht</button>
+  </div>
+</ng-template>
