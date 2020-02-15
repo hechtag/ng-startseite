@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Card } from '../shared/card';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IdService } from 'src/app/core/id.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class CardLinkService {
@@ -33,8 +34,23 @@ export class CardLinkService {
     this.handleCards(cards);
   }
 
+  editCard(card: Card) {
+    const val = this.cards$.value;
+    const cardToEdit = val.find(m => m.id === card.id);
+
+    cardToEdit.text = card.text;
+    cardToEdit.title = card.title;
+    cardToEdit.url = card.url;
+
+    this.handleCards(val);
+  }
+
   getCards(): Observable<Card[]> {
     return this.cards$.asObservable();
+  }
+
+  getCardById(id: string): Observable<Card> {
+    return this.cards$.pipe(map(array => array.find(c => c.id === id)));
   }
 
   delete(id: string) {
@@ -50,6 +66,6 @@ export class CardLinkService {
   private getFromStorage(): Card[] {
     const cardString = localStorage.getItem(this.localStorageKey);
     const cards = JSON.parse(cardString) as Card[];
-    return !!cards ? cards : this.default;
+    return !!cards ? cards : [];
   }
 }
