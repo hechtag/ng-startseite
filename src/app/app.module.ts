@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MemoryListModule } from './memory-list/memory-list.module';
 import { CardLinkModule } from './card-link/card-link.module';
+import routes from './routes';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { CardLinkModule } from './card-link/card-link.module';
     AppRoutingModule,
     NgbModule,
     MemoryListModule,
-    CardLinkModule
+    CardLinkModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]

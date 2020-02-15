@@ -12,6 +12,7 @@ import { MemoryService } from './services/memory.service';
     CommonModule,
     FormsModule
   ],
-  providers: [MemoryService]
+  providers: [MemoryService],
+  exports: [MemoryListComponent]
 })
 export class MemoryListModule { }
