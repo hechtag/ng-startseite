@@ -1,55 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { Memory } from '../shared/memory';
-import { IdService } from 'src/app/core/id.service';
+import { FireStoreService } from 'src/app/core/fire-store.service';
+import { Entity } from 'src/app/core/entity.model';
 
 @Injectable()
 export class MemoryService {
-  private localStorageKey = 'memories';
-  private memories$: BehaviorSubject<Memory[]>;
+  private collectionName = 'memories';
+  private memories$: Observable<Entity<Memory>[]>;
 
-  constructor(private idService: IdService) {
-    this.memories$ = new BehaviorSubject(this.getFromStorage());
-  }
-
-  createMemory(memoryString: string) {
-    return new Memory(memoryString, this.idService.getNewId());
+  constructor(private firestore: FireStoreService) {
+    this.memories$ = firestore.getCollectionData$(this.collectionName);
   }
 
   addMemory(memoryString: string) {
-    const mems = this.memories$.value;
-    mems.unshift(this.createMemory(memoryString));
-    this.handleMemories(mems);
+    const memory = { text: memoryString, done: false } as Memory;
+    this.firestore.createEntity(this.collectionName, memory);
   }
 
-  getMemories(): Observable<Memory[]> {
+  getMemories(): Observable<Entity<Memory>[]> {
     return this.memories$;
   }
-  hardReset() {
-    this.handleMemories([]);
-  }
-
 
   delete(id: string) {
-    const newVal = this.memories$.value.filter(m => m.id !== id);
-    this.handleMemories(newVal);
+    this.firestore.deleteEntity(this.collectionName, id);
   }
 
   isDone(id: string) {
-    const val = this.memories$.value;
-    val.find(m => m.id === id).done = true;
-
-    this.handleMemories(val);
+    this.firestore.patchEntity(this.collectionName, id, { done: true });
   }
 
-  private handleMemories(value: Memory[]) {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(value));
-    this.memories$.next(value);
-  }
-
-  private getFromStorage(): Memory[] {
-    const memString = localStorage.getItem(this.localStorageKey);
-    const mems = JSON.parse(memString) as Memory[];
-    return !!mems ? mems : [];
+  cleanUpDones() {
+    const sub = this.firestore.getCollectionData$<Memory>(this.collectionName).subscribe(entities => {
+      entities.filter(d => d.data.done === true).forEach(d => {
+        this.firestore.deleteEntity(this.collectionName, d.id);
+      });
+      timer(500).subscribe(() => sub.unsubscribe());
+    });
   }
 }

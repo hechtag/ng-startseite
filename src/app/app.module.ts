@@ -9,6 +9,9 @@ import { CardLinkModule } from './card-link/card-link.module';
 import routes from './routes';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from './core/core.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { CoreModule } from './core/core.module';
     MemoryListModule,
     CardLinkModule,
     CoreModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

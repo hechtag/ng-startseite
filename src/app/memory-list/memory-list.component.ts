@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Memory } from './shared/memory';
 import { ModalService } from '../core/modal.service';
+import { Entity } from '../core/entity.model';
 
 @Component({
   selector: 'app-memory-list',
@@ -14,8 +15,8 @@ export class MemoryListComponent implements OnInit, AfterViewInit {
 
   public memoryString: string;
   public memoryList: Memory[] = [];
-  public toDoMemoryList$: Observable<Memory[]>;
-  public doneMemoryList$: Observable<Memory[]>;
+  public toDoMemoryList$: Observable<Entity<Memory>[]>;
+  public doneMemoryList$: Observable<Entity<Memory>[]>;
 
   @ViewChild('memoryBar') memoryBar: ElementRef;
   ngAfterViewInit() {
@@ -29,9 +30,9 @@ export class MemoryListComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.toDoMemoryList$ = this.memoryService.getMemories()
-      .pipe(map(array => array.filter(m => !m.done)));
+      .pipe(map(array => array.filter(m => !m.data.done)));
     this.doneMemoryList$ = this.memoryService.getMemories()
-      .pipe(map(array => array.filter(m => m.done)));
+      .pipe(map(array => array.filter(m => m.data.done)));
   }
 
   addMemory() {
@@ -45,10 +46,15 @@ export class MemoryListComponent implements OnInit, AfterViewInit {
     this.memoryService.isDone(id);
   }
 
-  hardReset(content) {
+  delete(id: string) {
+    this.memoryService.delete(id);
+  }
+
+
+  cleanUp(content) {
     this.modalService.open(content).subscribe(result => {
       if (result) {
-        this.memoryService.hardReset();
+        this.memoryService.cleanUpDones();
       }
     });
   }

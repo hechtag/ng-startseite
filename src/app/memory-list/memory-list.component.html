@@ -6,19 +6,21 @@
   </div>
 </div>
 <div style="min-height:20rem">
-  <h3 *ngIf="(toDoMemoryList$ | async).length > 0">Was ist dran?</h3>
+  <h3 *ngIf="(toDoMemoryList$ | async)?.length > 0">Was ist dran?</h3>
 
   <ul class="list-group" *ngFor="let memory of toDoMemoryList$ | async">
-    <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.text}}
+    <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.data.text}}
       <button class="btn btn-primary mt-2" type="button" (click)="isDone(memory.id)">erledigt!</button>
     </li>
   </ul>
 </div>
-<button class="btn btn-primary mt-2 mb-2" type="button" (click)="hardReset(content)">Alle löschen</button>
+<button class="btn btn-primary mt-2 mb-2" type="button" (click)="cleanUp(content)">erledigte aufräumen</button>
 
-<h3 *ngIf="(doneMemoryList$ | async).length > 0">Das ist alles schon fertig!</h3>
+<h3 *ngIf="(doneMemoryList$ | async)?.length > 0">Das ist alles schon fertig!</h3>
+
 <ul class="list-group mt-2" *ngFor="let memory of doneMemoryList$ | async">
-  <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.text}}
+  <li class="list-group-item d-flex justify-content-between align-items-center">{{memory.data.text}}
+    <button class="btn btn-primary mt-2" type="button" (click)="delete(memory.id)">löschen!</button>
   </li>
 </ul>
 
