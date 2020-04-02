@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { tap, switchMap, delay } from 'rxjs/operators';
 import { CardLinkService } from '../services/card-link.service';
 import { Observable, iif } from 'rxjs';
-import { Card } from '../shared/card';
+import { Card } from '../card.model';
+import { Entity } from '@core/entity.model';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-card',
@@ -12,7 +14,14 @@ import { Card } from '../shared/card';
 })
 export class EditCardComponent implements OnInit, AfterViewInit {
   isEdit = false;
-  card: Card = { text: '', title: '', url: '', id: '' };
+  // card: Card = { text: '', title: '', url: '' };
+  id = '';
+
+  cardForm = new FormGroup({
+    text: new FormControl(''),
+    title: new FormControl(''),
+    url: new FormControl(''),
+  });
 
   @ViewChild('firstInput') firstInput: ElementRef;
   ngAfterViewInit() {
@@ -30,22 +39,35 @@ export class EditCardComponent implements OnInit, AfterViewInit {
         delay(0),
         tap(d => this.isEdit = !!d.id),
         switchMap(d => this.service.getCardById(d.id)),
-      )
-      .subscribe(card => {
+      ).subscribe(card => {
         if (card) {
-          this.card = card;
+          // this.card = card.data;
+          this.cardForm.setValue(card.data);
+          this.id = card.id;
         }
+      }, err => {
+        console.log(err, 'no doc');
       });
   }
 
-  add() {
-    this.service.addCard(this.card);
+  private add() {
+    this.service.addCard(this.cardForm.value);
     this.router.navigate(['./']);
   }
-  edit() {
-    this.service.editCard(this.card);
+
+  private edit() {
+    this.service.editCard(this.id, this.cardForm.value);
     this.router.navigate(['./']);
   }
+
+  submit() {
+    if (this.isEdit) {
+      this.edit();
+    } else {
+      this.add();
+    }
+  }
+
   cancel() {
     this.router.navigate(['./']);
   }

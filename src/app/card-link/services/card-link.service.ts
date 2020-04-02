@@ -1,71 +1,43 @@
 import { Injectable } from '@angular/core';
-import { Card } from '../shared/card';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { IdService } from 'src/app/core/id.service';
+import { Card } from '../card.model';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Entity } from '@core/entity.model';
+import { FireStoreService } from '@core/fire-store.service';
 
 @Injectable()
 export class CardLinkService {
-  private localStorageKey = 'cards';
-  private cards$: BehaviorSubject<Card[]>;
+  private collectionName = 'cards';
+  private cards$: Observable<Entity<Card>[]>;
 
-  constructor(private idService: IdService) {
-    this.cards$ = new BehaviorSubject(this.getFromStorage());
+  constructor(
+    private firestore: FireStoreService
+  ) {
+    this.cards$ = this.firestore.getCollectionData$(this.collectionName);
   }
 
-  private default = [
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '1' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '2' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '3' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '4' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '5' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '6' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '7' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '8' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '9' },
-    { title: 'Google', url: 'http://www.google.com', text: 'asd', id: '10' },
-  ];
 
   addCard(newCard: Card) {
-    newCard.id = this.idService.getNewId();
-
-    const cards = this.cards$.value;
-    cards.unshift(newCard);
-    this.handleCards(cards);
+    this.firestore.createEntity(this.collectionName, newCard);
   }
 
-  editCard(card: Card) {
-    const val = this.cards$.value;
-    const cardToEdit = val.find(m => m.id === card.id);
-
-    cardToEdit.text = card.text;
-    cardToEdit.title = card.title;
-    cardToEdit.url = card.url;
-
-    this.handleCards(val);
+  editCard(id: string, record: Card) {
+    this.firestore.patchEntity(
+      this.collectionName,
+      id,
+      record
+    );
   }
 
-  getCards(): Observable<Card[]> {
-    return this.cards$.asObservable();
+  getCards(): Observable<Entity<Card>[]> {
+    return this.cards$;
   }
 
-  getCardById(id: string): Observable<Card> {
-    return this.cards$.pipe(map(array => array.find(c => c.id === id)));
+  getCardById(id: string): Observable<Entity<Card>> {
+    return this.firestore.getDocument(this.collectionName, id);
   }
 
   delete(id: string) {
-    const newVal = this.cards$.value.filter(m => m.id !== id);
-    this.handleCards(newVal);
-  }
-
-  private handleCards(value: Card[]) {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(value));
-    this.cards$.next(value);
-  }
-
-  private getFromStorage(): Card[] {
-    const cardString = localStorage.getItem(this.localStorageKey);
-    const cards = JSON.parse(cardString) as Card[];
-    return !!cards ? cards : [];
+    this.firestore.deleteEntity(this.collectionName, id);
   }
 }

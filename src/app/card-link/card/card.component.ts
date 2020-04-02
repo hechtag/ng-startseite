@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Card } from '../shared/card';
+import { Card } from '../card.model';
+import { Entity } from '@core/entity.model';
 
 @Component({
   selector: 'app-card',
@@ -7,9 +8,9 @@ import { Card } from '../shared/card';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  @Input() card: Card;
-  @Output() edit: EventEmitter<Card> = new EventEmitter();
-  @Output() delete: EventEmitter<Card> = new EventEmitter();
+  @Input() card: Entity<Card>;
+  @Output() edit: EventEmitter<Entity<Card>> = new EventEmitter();
+  @Output() delete: EventEmitter<Entity<Card>> = new EventEmitter();
   constructor() { }
 
   ngOnInit() { }

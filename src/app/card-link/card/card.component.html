@@ -1,10 +1,10 @@
 <div class="card mt-1 mb-1">
   <div class="card-body">
-    <h5 class="card-title">{{card?.title}}</h5>
+    <h5 class="card-title">{{card?.data.title}}</h5>
     <p class="card-text" *ngIf="card?.text">
-      {{card?.text}}
+      {{card?.data.text}}
     </p>
-    <a href="{{card?.url}}" class="btn btn-primary btn-block">LINK!</a>
+    <a href="{{card?.data.url}}" class="btn btn-primary btn-block">LINK!</a>
     <div class="btn-group mt-1" role="group" aria-label="toolbar-card">
       <button type="button" (click)="editEvent()" class="btn btn-secondary btn-sm">Bearbeiten</button>
       <button type="button" (click)="deleteEvent()" class="btn btn-secondary btn-sm">Löschen</button>

@@ -4,7 +4,7 @@ import { CardLinkComponent } from './card-link.component';
 import { CardComponent } from './card/card.component';
 import { CardLinkService } from './services/card-link.service';
 import { EditCardComponent } from './edit-card/edit-card.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -12,7 +12,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   declarations: [CardLinkComponent, CardComponent, EditCardComponent],
   imports: [
     CommonModule,
-    FormsModule
+    ReactiveFormsModule,
+
   ],
   exports: [CardComponent, CardLinkComponent],
   providers: [CardLinkService]

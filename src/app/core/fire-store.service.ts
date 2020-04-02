@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Memory } from '../memory-list/shared/memory';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Entity } from './entity.model';
 
 @Injectable({
@@ -25,6 +25,15 @@ export class FireStoreService {
 
   deleteEntity(collectionName: string, id: string) {
     this.db.collection(collectionName).doc(id).delete();
+  }
+
+  getDocument<T>(collectionName, id: string): Observable<Entity<T>> {
+    return this.db.collection(collectionName)
+      .doc(id)
+      .valueChanges()
+      .pipe(map(d => {
+        return { id, data: d } as Entity<T>;
+      }));
   }
 
   patchEntity<T>(collectionName: string, id: string, patchRecord: T) {

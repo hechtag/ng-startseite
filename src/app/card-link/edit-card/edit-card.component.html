@@ -1,22 +1,24 @@
 <h3 *ngIf="isEdit">Bearbeiten</h3>
 <h3 *ngIf="!isEdit">Erstellen</h3>
+<form [formGroup]="cardForm" (ngSubmit)="submit()">
+  <div class="form-group">
+    <label for="title">Titel</label>
+    <input type="text" class="form-control" #firstInput name="title" formControlName="title" placeholder="Titel">
+  </div>
+  <div class="form-group">
+    <label for="url">Url</label>
+    <input type="text" class="form-control" name="url" formControlName="url" placeholder="Url">
+    <small id="url-help" class="form-text text-muted">die Url sollte richtig sein ;-)</small>
+  </div>
+  <div class="form-group">
+    <label for="text">Text</label>
+    <input type="text" class="form-control" name="text" formControlName="text" placeholder="Text">
+  </div>
 
-<div class="form-group">
-  <label for="title">Titel</label>
-  <input type="text" class="form-control" id="title" #firstInput [(ngModel)]="card.title" placeholder="Titel">
-</div>
-<div class="form-group">
-  <label for="url">Url</label>
-  <input type="text" class="form-control" id="url" [(ngModel)]="card.url" placeholder="Url">
-  <small id="url-help" class="form-text text-muted">die Url sollte richtig sein ;-)</small>
-</div>
-<div class="form-group">
-  <label for="text">Text</label>
-  <input type="text" class="form-control" id="text" [(ngModel)]="card.text" placeholder="Text">
-</div>
+  <div class="btn-group" role="group" aria-label="toolbar-card">
+    <button type="submit" [disabled]="!cardForm.valid"
+      class="btn btn-primary">{{isEdit?'Bearbeiten':'Hinzufügen'}}</button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Abbrechen</button>
+  </div>
 
-<div class="btn-group" role="group" aria-label="toolbar-card">
-  <button type="button" *ngIf="!isEdit" class="btn btn-primary" (click)="add()">Hinzufügen</button>
-  <button type="button" *ngIf="isEdit" class="btn btn-primary" (click)="edit()">Bearbeiten</button>
-  <button type="button" class="btn btn-secondary" (click)="cancel()">Abbrechen</button>
-</div>
+</form>

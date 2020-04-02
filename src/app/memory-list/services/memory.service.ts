@@ -9,7 +9,9 @@ export class MemoryService {
   private collectionName = 'memories';
   private memories$: Observable<Entity<Memory>[]>;
 
-  constructor(private firestore: FireStoreService) {
+  constructor(
+    private firestore: FireStoreService
+  ) {
     this.memories$ = firestore.getCollectionData$(this.collectionName);
   }
 
