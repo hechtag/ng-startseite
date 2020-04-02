@@ -16,6 +16,9 @@
         <li class="nav-item">
           <a class="nav-link" (click)="signOut()">Sign out</a>
         </li>
+        <li class="nav-item">
+          <span class="nav-link">Hallo {{(user$ | async)?.displayName}} ({{(user$ | async)?.email}})</span>
+        </li>
       </ul>
     </div>
   </nav>
