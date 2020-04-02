@@ -14,6 +14,13 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "paths": {
+      "@core/*": ["src/app/core/*"],
+      "@memories/*": ["src/app/memory-list/*"],
+      "@cards/*": ["src/app/card-link/*"],
+      "@environments/*": ["src/environments/*"],
+      "@interfaces/*": ["src/app/interfaces/*"],
+    },
     "lib": [
       "es2018",
       "dom"

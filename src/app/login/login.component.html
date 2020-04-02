@@ -1,0 +1,7 @@
+<form [formGroup]="loginForm" class="form-group mt-2 mb-2 col-6" (ngSubmit)="submit()">
+  <label for="email">email</label>
+  <input class="form-control" name="email" formControlName="email" type="text" [(ngModel)]="email" />
+  <label for="password">password</label>
+  <input class="form-control" name="password" formControlName="password" type="password" [(ngModel)]="password" />
+  <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary mt-2">signin</button>
+</form>
